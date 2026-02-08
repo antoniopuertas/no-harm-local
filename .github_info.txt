@@ -1,0 +1,14 @@
+GitHub Repository Information
+==============================
+
+Repository URL: https://github.com/antoniopuertas/no-harm-local
+Clone URL: https://github.com/antoniopuertas/no-harm-local.git
+
+After creating the repository on GitHub, run:
+
+    cd /home/puertao/llm/no-harm-local
+    ./init_git.sh
+    git remote add origin https://github.com/antoniopuertas/no-harm-local.git
+    git push -u origin main
+
+Status: Ready to push (but NOT pushed yet per user request)

@@ -296,7 +296,7 @@ harm_dimensions:
 datasets:
   medqa:
     path: "data/datasets/medqa"
-    variant: "US"  # or "Mainland", "Taiwan"
+    variant: "Mainland"  # or "US", "Taiwan"
     split: "test"
     size: 1273
 ```

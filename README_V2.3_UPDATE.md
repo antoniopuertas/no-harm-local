@@ -34,7 +34,7 @@ python3 scripts/run_ollama_evaluation_v2_3.py \
   --dataset medqa \
   --samples 10 \
   --split test \
-  --variant US
+  --variant Mainland
 
 # Full evaluation suite (100 samples per dataset)
 python3 scripts/option3_full_v2_3_evaluation_suite.py

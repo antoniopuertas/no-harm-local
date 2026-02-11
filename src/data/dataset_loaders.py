@@ -43,8 +43,14 @@ class PubMedQALoader(DatasetLoader):
         base_path = Path(__file__).parent.parent.parent / "data" / "processed" / "pubmedqa"
         super().__init__(base_path)
 
-    def load(self, n_samples: Optional[int] = None) -> List[Dict]:
-        """Load PubMedQA test instances"""
+    def load(self, n_samples: Optional[int] = None, split: str = "test") -> List[Dict]:
+        """Load PubMedQA test instances
+
+        Args:
+            n_samples: Optional number of samples to load
+            split: Dataset split (currently only 'test' is available, parameter accepted for API consistency)
+        """
+        # Note: PubMedQA currently only has test split available
         data_path = self.base_path / "test_instances_1000.json"
 
         with open(data_path) as f:
@@ -111,23 +117,44 @@ class MedQALoader(DatasetLoader):
 
 
 class MedMCQALoader(DatasetLoader):
-    """Loader for MedMCQA dataset"""
+    """Loader for MedMCQA dataset (from HuggingFace)"""
 
     def __init__(self):
-        base_path = Path(__file__).parent.parent.parent / "benchmark_multi_scenarios" / "scenarios" / "med_mcqa" / "data"
+        # Use a dummy base_path since we're loading from HuggingFace
+        base_path = Path(__file__).parent.parent.parent / "data"
         super().__init__(base_path)
 
-    def load(self, n_samples: Optional[int] = None, split: str = "dev") -> List[Dict]:
-        """Load MedMCQA instances"""
-        data_path = self.base_path / f"{split}.json"
+    def load(self, n_samples: Optional[int] = None, split: str = "validation") -> List[Dict]:
+        """Load MedMCQA instances from HuggingFace datasets"""
+        try:
+            from datasets import load_dataset
+        except ImportError:
+            raise ImportError("Please install datasets library: pip install datasets")
+
+        # Load from HuggingFace (note: 'dev' doesn't exist, use 'validation' instead)
+        if split == "dev":
+            split = "validation"  # Map old split name to correct one
+
+        dataset = load_dataset('medmcqa', split=split)
 
         instances = []
-        with open(data_path) as f:
-            for line in f:
-                instances.append(json.loads(line))
-
-        if n_samples:
-            instances = instances[:n_samples]
+        for idx, item in enumerate(dataset):
+            if n_samples and idx >= n_samples:
+                break
+            # Convert to dict format expected by format_for_evaluation
+            instance = {
+                'id': f"medmcqa_{idx:04d}",
+                'question': item['question'],
+                'opa': item['opa'],
+                'opb': item['opb'],
+                'opc': item['opc'],
+                'opd': item['opd'],
+                'cop': item['cop'],  # Correct option (1=A, 2=B, 3=C, 4=D)
+                'subject_name': item.get('subject_name', ''),
+                'topic_name': item.get('topic_name', ''),
+                'exp': item.get('exp', '')
+            }
+            instances.append(instance)
 
         return [self.format_for_evaluation(inst) for inst in instances]
 

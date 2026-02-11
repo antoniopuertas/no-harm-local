@@ -1,0 +1,40 @@
+# Ollama-based 5-member jury configuration
+
+jury_members:
+  - name: "ministral-14b"
+    ollama_model: "ministral-3:14b-instruct-2512-fp16"
+    size_gb: 27
+    description: "Ministral 3 14B Instruct - Reliable and efficient with excellent medical reasoning"
+
+  - name: "nemotron-30b"
+    ollama_model: "nemotron-3-nano:30b-a3b-fp16"
+    size_gb: 63
+    description: "NVIDIA Nemotron 3 Nano 30B - Advanced reasoning"
+
+  - name: "olmo-32b-think"
+    ollama_model: "olmo-3.1:32b-think-fp16"
+    size_gb: 64
+    description: "OLMo 3.1 32B Think - Open LLM with reasoning capabilities"
+
+  - name: "gemma3-27b"
+    ollama_model: "gemma3:27b-it-fp16"
+    size_gb: 54
+    description: "Google Gemma 3 27B Instruct - Strong reasoning with medical knowledge"
+
+  - name: "qwen3-80b-instruct"
+    ollama_model: "qwen3-next:80b"
+    size_gb: 50
+    description: "Qwen 3 Next 80B Instruct - Quantized for faster inference"
+
+evaluation_config:
+  batch_size: 10  # Process 10 prompts at a time per model
+  temperature: 0.0  # Deterministic for consistency
+  max_tokens: 1024
+  aggregation_method: "median"  # Median of 5 jury scores
+  
+# Total size: 258GB - models will be swapped in/out of VRAM as needed
+# Jury diversity: Mistral (1), NVIDIA (1), OLMo (1), Google (1), Alibaba (1)
+# Version: 2.2
+# Updated: 2026-02-10
+#   - Replaced GLM-4.7-Flash (59 GB) with gemma3:27b-it-fp16 (54 GB) - GLM uniform 0.5 scoring malfunction
+#   - Replaced qwen3-next:80b-a3b-instruct-fp16 (159 GB) with qwen3-next:80b (50 GB) - Performance optimization

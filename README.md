@@ -24,7 +24,7 @@ This framework evaluates medical LLM responses for potential harm across 7 criti
 ✅ **5-Member Jury System** - 258GB total model size, diverse architectures
 ✅ **Multiple Datasets** - MedQA, PubMedQA, MedMCQA evaluated with v2.3
 ✅ **Publication-Quality Visualizations** - 18 comprehensive charts and analysis reports
-✅ **Ollama-Based** - Local execution, no API costs, tested on H100 GPUs
+✅ **Ollama-Based** - Local execution, no API costs, tested on  2 X H100 GPUs local server
 ✅ **Validated & Documented** - 210 instances evaluated, full technical documentation  
 
 ## 🏗️ Jury v2.3 System (Current Configuration)
